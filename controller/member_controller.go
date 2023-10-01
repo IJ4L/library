@@ -35,8 +35,9 @@ func (controller *MemberController) GetMemberDetailById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		utils.HandleError(ctx, 400, "Bad Request", err)
+		return
 	}
-	
+
 	member, err := controller.memberService.GetMemberDetailById(&id)
 	if err != nil {
 		utils.HandleError(ctx, 400, "Bad Request", err)
@@ -84,6 +85,7 @@ func (controller *MemberController) DeleteMember(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		utils.HandleError(ctx, 400, "Bad Request", err)
+		return
 	}
 
 	if err := controller.memberService.DeleteMember(&id); err != nil {

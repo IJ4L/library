@@ -27,7 +27,7 @@ func (service *MemberServiceImpl) FetchAllMembers() []response.Member {
 }
 
 func (service *MemberServiceImpl) AddMember(member *request.Member) error {
-	if err := utils.ValidateFunc(&member, service.validate); err != nil {
+	if err := utils.ValidateFunc(member, service.validate); err != nil {
 		return err
 	}
 
@@ -39,7 +39,7 @@ func (service *MemberServiceImpl) AddMember(member *request.Member) error {
 }
 
 func (service *MemberServiceImpl) GetMemberDetailById(id *int) (response.Member, error) {
-	if *id < 0 {
+	if *id <= 0 {
 		return response.Member{}, fmt.Errorf("error: ID cannot be nil")
 	}
 
@@ -52,7 +52,7 @@ func (service *MemberServiceImpl) GetMemberDetailById(id *int) (response.Member,
 }
 
 func (service *MemberServiceImpl) UpdateMember(member *request.Member) error {
-	if err := utils.ValidateFunc(&member, service.validate); err != nil {
+	if err := utils.ValidateFunc(member, service.validate); err != nil {
 		return err
 	}
 
@@ -64,7 +64,7 @@ func (service *MemberServiceImpl) UpdateMember(member *request.Member) error {
 }
 
 func (service *MemberServiceImpl) DeleteMember(id *int) error {
-	if *id < 0 {
+	if *id <= 0 {
 		return fmt.Errorf("error: ID cannot be nil")
 	}
 

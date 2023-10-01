@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 	"library.com/data/request"
 	"library.com/data/response"
@@ -18,7 +20,8 @@ func NewMemberRepositoryImpl(db *gorm.DB) *MemberRepositoryImpl {
 
 func (repo *MemberRepositoryImpl) GetAllMembers() []response.Member {
 	var members []response.Member
-	repo.DB.Find(&members)
+	repo.DB.Table("members").Find(&members)
+	fmt.Println(members)
 	return members
 }
 
@@ -48,10 +51,12 @@ func (repo *MemberRepositoryImpl) UpdateMember(member *request.Member) error {
 }
 
 func (repo *MemberRepositoryImpl) DeleteMember(id *int) error {
-	var member response.Member
-	db := repo.DB.Table("members").Where("id = ?", &id).Delete(&member)
+	db := repo.DB.Where("id = ?", &id).Delete(&response.Member{})
 	if db.Error != nil {
 		return db.Error
+	}
+	if db.RowsAffected == 0 {
+		return fmt.Errorf("error: Member with ID %d not found", id)
 	}
 	return nil
 }
