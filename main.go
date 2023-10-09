@@ -26,7 +26,11 @@ func main() {
 	memberService := service.NewMemberServiceImpl(memberRepository, validate)
 	memberController := controller.NewMemberController(memberService, ctx)
 
-	routes := router.NewRouter(bookController, memberController)
+	borrowingRepository := repository.NewBorrowingRepositoryImpl(db)
+	borrowingService := service.NewBorrowingServiceImpl(borrowingRepository, validate)
+	borrowingController := controller.NewBorrowingControlerImpl(borrowingService, ctx)
+
+	routes := router.NewRouter(bookController, memberController, borrowingController)
 
 	server := &http.Server{
 		Addr:           "localhost:3000",
@@ -37,4 +41,5 @@ func main() {
 	}
 
 	server.ListenAndServe()
+	// helper.ErrorPanic(server_err)
 }

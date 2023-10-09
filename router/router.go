@@ -5,9 +5,8 @@ import (
 	"library.com/controller"
 )
 
-func NewRouter(bookController *controller.BookController, memberController *controller.MemberController) *gin.Engine {
+func NewRouter(bookController *controller.BookController, memberController *controller.MemberController, borrowingController *controller.BorrowingController) *gin.Engine {
 	service := gin.Default()
-
 	router := service.Group("/api")
 
 	{
@@ -20,7 +19,7 @@ func NewRouter(bookController *controller.BookController, memberController *cont
 			bookRouter.GET("/:id", bookController.GetBookDetailById)
 		}
 	}
-
+	
 	{
 		memberRouter := router.Group("/members")
 		{
@@ -29,6 +28,13 @@ func NewRouter(bookController *controller.BookController, memberController *cont
 			memberRouter.PUT("/:id", memberController.UpdateMember)
 			memberRouter.DELETE("/:id", memberController.DeleteMember)
 			memberRouter.GET("/:id", memberController.GetMemberDetailById)
+		}
+	}
+
+	{
+		borrowingRouter := router.Group("/borrowings")
+		{
+			borrowingRouter.GET("", borrowingController.Index)
 		}
 	}
 
